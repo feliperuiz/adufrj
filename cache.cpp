@@ -1,29 +1,17 @@
 #include "cache.h"
 
 cache::cache() {
-    maxArquivos = 0;
+    taxasChegada = std::deque<double>();
     arquivos = std::deque<int>();
 }
 
-cache::cache(int n) {
-    maxArquivos = n;
-    arquivos = std::deque<int>();
+cache::cache(std::deque<double> taxas, std::deque<int> arquivosIniciais) {
+    taxasChegada = taxas;
+    arquivos = arquivosIniciais;
 }
 
-int cache::getMaxArquivos() {
-    return maxArquivos;
-}
-
-int cache::getTotalArquivos() {
-    return arquivos.size();
-}
-
-std::deque<int> cache::getArquivos() {
-    return arquivos;
-}
-
-cache& cache::insere(int idArquivo) {
-    if ( arquivos.size() >= maxArquivos ) {
+cache& cache::insereArquivo(int idArquivo) {
+    if ( arquivos.size() >= SIM_MAX_FILES_PER_CACHE ) {
         arquivos.pop_front();
     }
     arquivos.push_back(idArquivo);
@@ -32,15 +20,16 @@ cache& cache::insere(int idArquivo) {
 }
 
 bool cache::buscaArquivo(int idArquivo) {
-    std::deque<int>::iterator posicao =  std::find(arquivos.begin(), arquivos.end(), idArquivo);
-    if ( posicao == arquivos.end() ) {
-        return false;
+    if ( std::find(arquivos.begin(), arquivos.end(), idArquivo) != arquivos.end() ) {
+        return true;
     }
-    return true;
+    return false;
 }
 
-void cache::imprimeArquivos() {
-    for (std::deque<int>::iterator it = arquivos.begin(); it != arquivos.end(); ++it) {
-        std::cout << *it << std::endl;
+
+void cache::imprimeConteudo() {
+    for (int i = 0; i < arquivos.size(); ++i) {
+        std::cout << "arquivo[" << i << "] = " << arquivos[i] << " ";
     }
+    std::cout << std::endl;
 }

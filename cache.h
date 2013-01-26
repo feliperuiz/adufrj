@@ -8,20 +8,17 @@
 class cache {
 public:
     cache();
-    cache(int maxArquivos);
+    cache(std::deque<double> taxas, std::deque<int> arquivosIniciais);
 
-    int getMaxArquivos();
-    int getTotalArquivos();
-    std::deque<int> getArquivos();
-
-    cache& insere(int idArquivo);
+    cache& insereArquivo(int idArquivo);
     bool buscaArquivo(int idArquivo);
 
 
-    void imprimeArquivos();
+    void imprimeConteudo();
+
 private:
+    std::deque<double> taxasChegada;
     std::deque<int> arquivos;
-    int maxArquivos;
 };
 
 #endif // CACHE_H

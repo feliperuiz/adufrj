@@ -16,6 +16,11 @@ bool sistema::buscaArquivo(int idArquivo, int idCache) {
 
     std::cout << "buscando arquivo " << idArquivo << " no cache " << idCache << std::endl;
 
+    if ( idCache >= caches.size() ) {
+        std::cout << "Procurei em todos os caches, não achei" << std::endl;
+        return false;
+    }
+
     if ( getCache(idCache).buscaArquivo(idArquivo) ) {
         std::cout << "achou arquivo " << idArquivo << " no cache " << idCache << std::endl;
         return true;
@@ -24,6 +29,7 @@ bool sistema::buscaArquivo(int idArquivo, int idCache) {
         //se achou arquivo no próximo cache, vamos copiar pra o cache atual;
         if ( buscaArquivo(idArquivo, idCache+1) ) {
             getCache(idCache).insereArquivo(idArquivo);
+            return true;
         }
     }
 }

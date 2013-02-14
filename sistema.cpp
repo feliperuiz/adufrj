@@ -32,4 +32,6 @@ bool sistema::buscaArquivo(int idArquivo, int idCache) {
             return true;
         }
     }
+
+    return false;
 }

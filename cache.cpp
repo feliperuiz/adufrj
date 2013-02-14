@@ -28,7 +28,7 @@ bool cache::buscaArquivo(int idArquivo) {
 
 
 void cache::imprimeConteudo() {
-    for (int i = 0; i < arquivos.size(); ++i) {
+    for (unsigned int i = 0; i < arquivos.size(); ++i) {
         std::cout << "arquivo[" << i << "] = " << arquivos[i] << " ";
     }
     std::cout << std::endl;

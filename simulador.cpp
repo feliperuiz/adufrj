@@ -10,6 +10,9 @@ simulador& simulador::insereChegadaEmEventos(int idArquivo, int idCache, double 
 }
 
 void simulador::imprimeListaDeEventos() {
+    if ( !DEBUG ) {
+        return;
+    }
     std::priority_queue<evento, std::vector<evento>, std::greater<evento> > copia = listaDeEventos;
 
     while ( !copia.empty() ) {

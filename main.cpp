@@ -5,10 +5,17 @@
 
 #include "cacherouter.h"
 
+/**
+ * RT_i = Retirada do arquivo i
+ * RQ_i_j = Requisição do arquivo i na cache j
+ * IN_i_j = Inserção do arquivo i na cache j
+ **/
+
 using std::cout;
 using std::endl;
+double tempoSimulacao = 0;
 
-int main() {
+int parte2() {
 
     srand( time(NULL) );
 
@@ -65,10 +72,12 @@ int main() {
 
     std::cout << "ttl final é de " << ttl << std::endl;
     std::cout << "Custo total para acessar o arquivo é de " << custo << std::endl;
+
+    return 0;
 }
 
 
-int main2() {
+int parte1() {
 
     srand( time(NULL) );
 
@@ -121,28 +130,41 @@ int main2() {
         }
     }
 
-    std::cout << "Início do sistema:" << std::endl;
+    if ( DEBUG || LOGGING ) {
+        std::cout << "Início do sistema:" << std::endl;
+    }
     sim.imprimeListaDeEventos();
-
-    std::cout << std::endl << std::endl;
 
     sistema s(2, taxasCache, arquivosIniciais);
 
 //    cache& c = s.getCache(0);
 
-    while (totalEventos < SIM_STOP_CONDITION) {
+    while ( !sim.vazio() ) {
         evento e = sim.getPrimeiroEvento();
         ++totalEventos;
-        std::cout << "Requisição ao arquivo " << e.getArquivo() << " no cache " << e.getCache() << " no tempo " << e.getTempoChegada() << std::endl << std::endl;
+
+        tempoSimulacao = e.getTempoChegada();
 
         s.buscaArquivo(e.getArquivo(), e.getCache());
-        std::cout << std::endl;
-        tempoChegada = simulador::geraChegadaPoisson(t[e.getCache()][e.getArquivo()]);
-        sim.insereChegadaEmEventos(e.getArquivo(), e.getCache(), e.getTempoChegada() + tempoChegada);
+        if ( totalEventos < SIM_STOP_CONDITION ) {
+            tempoChegada = simulador::geraChegadaPoisson(t[e.getCache()][e.getArquivo()]);
+            sim.insereChegadaEmEventos(e.getArquivo(), e.getCache(), e.getTempoChegada() + tempoChegada);
+        }
 
         sim.imprimeListaDeEventos();
+
+        if ( sim.vazio() ) {
+            std::cout << "[" << e.getTempoChegada() << "]{FIM}";
+        }
     }
 
+
+    return 0;
+}
+
+
+int main(void) {
+    parte1();
 
     return 0;
 }

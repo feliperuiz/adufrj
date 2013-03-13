@@ -13,6 +13,7 @@ public:
     void imprimeListaDeEventos();
 
     inline evento getPrimeiroEvento() {evento e = listaDeEventos.top(); listaDeEventos.pop(); return e;}
+    inline bool vazio() { return listaDeEventos.empty(); }
 
     static double geraChegadaPoisson(double taxa);
 private:

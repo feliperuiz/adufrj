@@ -3,6 +3,10 @@
         $arquivo = file('/home/felipe/Documents/AD/simulacao-build-desktop/'.$_GET['file'].'.txt');
     }
     
+    $arquivoCDF[0] = fopen('/home/felipe/Documents/AD/simulacao-build-desktop/cdfs/cdf_1_'.$_GET['file'].'.txt', 'w+');
+    $arquivoCDF[1] = fopen('/home/felipe/Documents/AD/simulacao-build-desktop/cdfs/cdf_2_'.$_GET['file'].'.txt', 'w+');
+    $arquivoCDF[2] = fopen('/home/felipe/Documents/AD/simulacao-build-desktop/cdfs/cdf_3_'.$_GET['file'].'.txt', 'w+');
+    
     $requisicoes = array();
     $movimentacoes = array();
     $tempoTotal;
@@ -49,6 +53,7 @@
     $totalRequisicoes = array();
     $mediaIntervaloReq = array();
     $varianciaIntervaloReq = array();
+    $tempoEntreRequisicoes = array();
     foreach ( $requisicoes as $idCache => $cacheRQ ) {
         $totalRequisicoes[$idCache] = array();
         $mediaIntervaloReq[$idCache] = array();
@@ -61,9 +66,12 @@
                 
                 if ( $ultimaReq ) {
                     $intervaloReq += $tempo - $ultimaReq;
+                    $tempoEntreRequisicoes[$idCache][$idArquivo][] = $tempo - $ultimaReq;
                 }
                 $ultimaReq = $tempo;
             }
+            
+            sort($tempoEntreRequisicoes[$idCache][$idArquivo]);
 
             $mediaIntervaloReq[$idCache][$idArquivo] = $intervaloReq/(count($arquivoRQ) - 1);
             $totalRequisicoes[$idCache][$idArquivo] = count($arquivoRQ);
@@ -93,8 +101,21 @@
     }
     
     
+    foreach ( $tempoEntreRequisicoes as $idCache => $tempoReqCache ) {
+        foreach ( $tempoReqCache as $idArquivo => $tempoReqArquivo ) {
+            $totalLinhas = count($tempoReqArquivo)-1;
+            $string = '';
+            foreach ( $tempoReqArquivo as $numLinha => $intervalo) {
+                $string .= $intervalo.'          '.($numLinha/$totalLinhas)."\n";
+            }
+            fwrite($arquivoCDF[$idArquivo], $string);
+            fclose($arquivoCDF[$idArquivo]);
+        }
+    }
+    
     $tempoNaCache = array();
     $porcentagemNaCache = array();
+    $varianciaPorcentagemNaCache = array();
     //Calculando ei2
     foreach ( $movimentacoes as $idCache => $cacheRT ) {
         $tempoNaCache[$idCache] = array();

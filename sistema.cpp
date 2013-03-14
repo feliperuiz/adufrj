@@ -24,8 +24,6 @@ bool sistema::buscaArquivo(int idArquivo, int idCache) {
     if ( idCache == 1 ) {
         if ( LOGGING || DEBUG) {
             std::cout << "[ " << tempoSimulacao << " ] {RQ_" << idArquivo <<"_2}Requisição ao arquivo " << idArquivo << " na cache 2" << std::endl;
-            std::cout << "\tCache 2 tem o seguinte conteúdo: ";
-            getCache(idCache).imprimeConteudo();
         }
     }
 

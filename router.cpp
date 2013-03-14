@@ -12,17 +12,25 @@ void router::printVizinhos() {
 }
 
 router& router::getVizinhoAleatorio() {
-    std::cout << vizinhos.size() << std::endl;
+    if ( DEBUG ) {
+        std::cout << vizinhos.size() << std::endl;
+    }
     int vizinho = rand()%vizinhos.size();
 
-    std::cout << "Meus vizinhos são: ";
-    printVizinhos();
+    if ( DEBUG ) {
+        std::cout << "Meus vizinhos são: ";
+        printVizinhos();
+    }
 
-    std::cout << "Estou indo para o vizinho " << vizinhos.at(vizinho)->getTexto() << std::endl;
+    if ( DEBUG ) {
+        std::cout << "Estou indo para o vizinho " << vizinhos.at(vizinho)->getTexto() << std::endl;
+    }
     return *(vizinhos.at(vizinho));
 }
 
 bool router::achouArquivo() {
-    std::cout << "Não achei o arquivo no " << str << std::endl;
+    if ( DEBUG ) {
+        std::cout << "Não achei o arquivo no " << str << std::endl;
+    }
     return false;
 }

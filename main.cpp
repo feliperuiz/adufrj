@@ -17,8 +17,6 @@ double tempoSimulacao = 0;
 
 int parte2() {
 
-    srand( time(NULL) );
-
     router r1, r2;
     cacheRouter r3, r4, r5;
 
@@ -46,17 +44,21 @@ int parte2() {
     r5.adicionaVizinho(&r3);
     r5.adicionaVizinho(&r4);
 
-    r1.printVizinhos();
-    r2.printVizinhos();
-    r3.printVizinhos();
-    r4.printVizinhos();
-    r5.printVizinhos();
+    if ( DEBUG ) {
+        r1.printVizinhos();
+        r2.printVizinhos();
+        r3.printVizinhos();
+        r4.printVizinhos();
+        r5.printVizinhos();
 
-    std::cout << "      " << std::endl;
+        std::cout << "      " << std::endl;
+    }
     int custo = 0;
 
     int ttl = SIM_PARTE_2_TTL;
-    std::cout << "ttl inicial é de " << ttl << std::endl;
+    if ( DEBUG ) {
+        std::cout << "ttl inicial é de " << ttl << std::endl;
+    }
     router* routerAtual = &r1;
 
     while ( ttl > 0 && !routerAtual->achouArquivo() ) {
@@ -70,16 +72,19 @@ int parte2() {
 
     custo += SIM_PARTE_2_TTL - ttl;
 
-    std::cout << "ttl final é de " << ttl << std::endl;
-    std::cout << "Custo total para acessar o arquivo é de " << custo << std::endl;
+    if ( DEBUG ) {
+        std::cout << "ttl final é de " << ttl << std::endl;
+    }
+    if ( DEBUG || LOGGING ) {
+        //std::cout << "Custo total para acessar o arquivo é de " << custo << std::endl;
+        std::cout << "C:"<< custo << std::endl;
+    }
 
     return 0;
 }
 
 
 int parte1() {
-
-    srand( time(NULL) );
 
     simulador sim;
     int totalEventos = 0;
@@ -164,7 +169,10 @@ int parte1() {
 
 
 int main(void) {
-    parte1();
+    srand( time (NULL) );
+    for (int i = 0; i < SIM_STOP_CONDITION; ++i) {
+        parte2();
+    }
 
     return 0;
 }

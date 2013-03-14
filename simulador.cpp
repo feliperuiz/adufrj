@@ -24,7 +24,7 @@ void simulador::imprimeListaDeEventos() {
 }
 
 double simulador::geraChegadaPoisson(double taxa) {
-    double u = (double)(rand()%100+1)/100;
+    double u = (double)(rand()%101)/100;
     double tempo = -log(u)/taxa;
 
     return tempo;
